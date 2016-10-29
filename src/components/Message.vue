@@ -2,10 +2,10 @@
   <div class="main">
     <div class="message">
       <ul>
-        <li v-for="msg in messages">
+        <li v-for="msg in session.messages">
           <p class="time"><span>{{msg.time}}</span></p>
           <div v-bind:class="{'self':msg.self}">
-            <img :src="msg.avatar">
+            <img :src="session.user.avatar">
             <div class="content">{{msg.msg}}</div>
           </div>
         </li>
@@ -18,40 +18,26 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default{
     data(){
-      var res
-      var xmlhttp
-      if (window.XMLHttpRequest)
-      {// code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp=new XMLHttpRequest()
-      }
-      else
-      {// code for IE6, IE5
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP")
-      }
-      xmlhttp.open("GET","http://localhost:3000/" ,false)
-      xmlhttp.send()
-      res = JSON.parse(xmlhttp.responseText)
-      return res
+      return{content : ''}
     },
-    components:{
-    },
+    computed: mapGetters([
+      'user',
+      'session'
+    ]),
     methods:{
+      ...mapActions(['sendMessage']),
       send(event){
         if (event.ctrlKey && event.keyCode == 13){
-          var date = new Date();
-          var time = date.getHours() + ":" + date.getMinutes();
-          this.messages.push({
-            time:time,
-            avatar:require('assets/logo.png'),
-            msg: this.content,
-            self: true
-          })
+
+          this.sendMessage(this.content)
           this.content = ''
         }
       }
-    }
+    },
   }
 </script>
 
@@ -71,10 +57,6 @@
   .message ul{
     padding-left: 10px;
     list-style: none;
-  }
-
-  .message li{
-
   }
 
   .message p{

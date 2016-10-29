@@ -1,23 +1,25 @@
 <template>
-  <div id="app">
-    <div class="chat">
-      <Panel></Panel>
-      <Message></Message>
-    </div>
+  <div class="chat">
+    <Panel></Panel>
+    <Message></Message>
   </div>
 </template>
 
 <script>
 import Panel from './components/Panel.vue'
 import Message from './components/Message.vue'
+import store from './store'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'app',
   components: {
     Panel, Message
   },
-  ready:function () {
-
+  methods: mapActions(['initData']),
+  created (){
+    console.log(this)
+    this.initData()
   }
 }
 </script>

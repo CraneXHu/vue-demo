@@ -13,13 +13,13 @@
     </div>
     <div class="chat_list">
       <ul>
-        <li v-for="friend in friends">
+        <li v-for="item in sessions">
           <div class="list_item">
             <div class="avatar">
-              <img :src="friend.avatar">
+              <img :src="item.user.avatar">
             </div>
             <div class="nickname">
-              <h3>{{friend.nickname}}</h3>
+              <h3>{{item.user.nickname}}</h3>
             </div>
           </div>
         </li>
@@ -29,30 +29,16 @@
 </template>
 
 <script>
-  export default{
-    data () {
-      return {
-        user:{
-          avatar: '',
-          nickname: ''
-        },
-        friends: [{
-          avatar: '',
-          nickname: ''
-        }]
-      }
-    },
-    components: {
-    },
-    methods: {
-    },
-    ready:function () {
-      this.$http.get('/', function (data){
+  import { mapGetters, mapActions } from 'vuex'
 
-      }).error(function (data, status, request) {
-        console.log(status)
-      })
-    }
+  export default{
+    computed: mapGetters([
+      'user',
+      'sessions'
+    ]),
+    methods: mapActions([
+
+    ])
   }
 </script>
 
